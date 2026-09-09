@@ -35,6 +35,15 @@ public class GildedRoseTest
     }
     
     [Test]
+    public void QualityNeverGreaterThanFifty()
+    {
+        var items = new List<Item> { new Item { Name = "Aged Brie", SellIn = 5, Quality = 50 } };
+        var app = new GildedRose(items);
+        app.UpdateQuality();
+        Assert.That(items[0].Quality, Is.EqualTo(50));
+    }
+    
+    [Test]
     public void Sulfuras_DoesNotChangeSellInOrQuality()
     {
         // Arrange
