@@ -42,19 +42,90 @@ public class GildedRoseTest
         app.UpdateQuality();
         Assert.That(items[0].Quality, Is.EqualTo(50));
     }
-    
+
     [Test]
     public void Sulfuras_DoesNotChangeSellInOrQuality()
     {
         // Arrange
         var items = new List<Item> { new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 80 } };
         var app = new GildedRose(items);
-        
+
         // Act
         app.UpdateQuality();
-        
+
         // Assert
         Assert.That(items[0].Quality, Is.EqualTo(80));
         Assert.That(items[0].SellIn, Is.EqualTo(0));
     }
+
+    [Test]
+    public void AgedBrie_Increases_In_Quality_As_Ages()
+    {
+        // Arrange
+        var items = new List<Item> { new Item { Name = "Aged Brie", SellIn = 10, Quality = 20 } };
+        var app = new GildedRose(items);
+    
+        // Act
+        app.UpdateQuality();
+    
+        // Assert
+        Assert.That(items[0].Quality, Is.EqualTo(21));
+    }
+    
+    [Test]
+    public void BackstagePasses_Quality_IncreasesBy1_MoreThan10DaysOut()
+    {
+        // Arrange
+        var items = new List<Item> { new Item { Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 20, Quality = 20 } };
+        var app = new GildedRose(items);
+    
+        // Act
+        app.UpdateQuality();
+    
+        // Assert
+        Assert.That(items[0].Quality, Is.EqualTo(21));
+    }
+    
+    [Test]
+    public void BackstagePasses_Quality_IncreasesBy2_Between10and5Days()
+    {
+        // Arrange
+        var items = new List<Item> { new Item { Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 7, Quality = 20 } };
+        var app = new GildedRose(items);
+    
+        // Act
+        app.UpdateQuality();
+    
+        // Assert
+        Assert.That(items[0].Quality, Is.EqualTo(22));
+    }
+    
+    [Test]
+    public void BackstagePasses_Quality_IncreasesBy3_5AndFewer()
+    {
+        // Arrange
+        var items = new List<Item> { new Item { Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 3, Quality = 20 } };
+        var app = new GildedRose(items);
+    
+        // Act
+        app.UpdateQuality();
+    
+        // Assert
+        Assert.That(items[0].Quality, Is.EqualTo(23));
+    }
+    
+    [Test]
+    public void BackstagePasses_Quality_ZeroAfterConcert()
+    {
+        // Arrange
+        var items = new List<Item> { new Item { Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 0, Quality = 20 } };
+        var app = new GildedRose(items);
+    
+        // Act
+        app.UpdateQuality();
+    
+        // Assert
+        Assert.That(items[0].Quality, Is.EqualTo(0));
+    }
+    
 }
