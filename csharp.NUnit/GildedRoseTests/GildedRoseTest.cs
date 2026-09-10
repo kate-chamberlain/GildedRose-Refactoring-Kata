@@ -141,5 +141,35 @@ public class GildedRoseTest
         // Assert
         Assert.That(items[0].Quality, Is.EqualTo(0));
     }
+
+    [Test]
+
+    public void ConjuredItem_QualityDegradesTwiceAsFastAsNormalBeforeSellBy()
+    {
+        // Arrange
+        var items = new List<Item> { new Item { Name = "Conjured Mana Cake", SellIn = 5, Quality = 20 } };
+        var app = new GildedRose(items);
+
+        // Act
+        app.UpdateQuality();
+
+        // Assert
+        Assert.That(items[0].Quality, Is.EqualTo(18));
+    }
+
     
+    [Test]
+
+    public void ConjuredItem_QualityDegradesTwiceAsFastAsNormalAfterSellBy()
+    {
+        // Arrange
+        var items = new List<Item> { new Item { Name = "Conjured Mana Cake", SellIn = 0, Quality = 20 } };
+        var app = new GildedRose(items);
+
+        // Act
+        app.UpdateQuality();
+
+        // Assert
+        Assert.That(items[0].Quality, Is.EqualTo(16));
+    }
 }

@@ -34,6 +34,12 @@ public class GildedRose
         {
             updateBackstagePasses(item);
         }
+
+        else if(item.Name.StartsWith("Conjured"))
+        {
+            updateConjuredItems(item);
+        }
+        
         else
         {
             updateNormalItems(item);
@@ -77,7 +83,11 @@ public class GildedRose
             }
         item.SellIn -= 1;
     }
-
+    private void updateConjuredItems(Item item)
+    {
+        item.SellIn--;
+        item.Quality -= (item.SellIn < 0) ? 4 : 2;
+    }
     private void updateNormalItems(Item item)
     {
         item.SellIn--;
