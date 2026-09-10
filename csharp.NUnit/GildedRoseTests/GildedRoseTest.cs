@@ -59,10 +59,24 @@ public class GildedRoseTest
     }
 
     [Test]
-    public void AgedBrie_Increases_In_Quality_As_Ages()
+    public void AgedBrie_Plus2QualityAfterSellBy()
     {
         // Arrange
-        var items = new List<Item> { new Item { Name = "Aged Brie", SellIn = 10, Quality = 20 } };
+        var items = new List<Item> { new Item { Name = "Aged Brie", SellIn = -2, Quality = 20 } };
+        var app = new GildedRose(items);
+    
+        // Act
+        app.UpdateQuality();
+    
+        // Assert
+        Assert.That(items[0].Quality, Is.EqualTo(22));
+    }
+    
+    [Test]
+    public void AgedBrie_Increases_Plus1QualityBeforeSellBy()
+    {
+        // Arrange
+        var items = new List<Item> { new Item { Name = "Aged Brie", SellIn = 5, Quality = 20 } };
         var app = new GildedRose(items);
     
         // Act
