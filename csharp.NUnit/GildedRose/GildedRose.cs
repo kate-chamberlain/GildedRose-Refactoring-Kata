@@ -20,7 +20,22 @@ public class GildedRose
                 continue; // Skip all original logic for Sulfuras. Nothing needs changing as it's a legendary item
             }
 
-
+            if (Items[i].Name == "Aged Brie")
+            {
+                Items[i].SellIn = Items[i].SellIn - 1;
+                if (Items[i].Quality < 50)
+                {
+                    if (Items[i].SellIn >= 0)
+                    {
+                        Items[i].Quality+=1;
+                    }
+                    else
+                    {
+                        Items[i].Quality += 2;
+                    }
+                }
+                continue;
+            }
             if (Items[i].Name != "Aged Brie" && Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
             {
                 if (Items[i].Quality > 0)
