@@ -15,63 +15,72 @@ public class GildedRose
     {
         for (var i = 0; i < Items.Count; i++)
         {
-            if (Items[i].Name == "Sulfuras, Hand of Ragnaros")
+            UpdateSingleItem(Items[i]);
+        }
+    }
+    private void UpdateSingleItem(Item item)
+    {
+        if (item.Name == "Sulfuras, Hand of Ragnaros")
             {
-                continue; // Skip all original logic for Sulfuras. Nothing needs changing as it's a legendary item
+                return; // Skip all original logic for Sulfuras. Nothing needs changing as it's a legendary item
             }
+        
+        if (item.Name == "Aged Brie")
+        {
+            UpdateAgedBrie(item);
+        }
+        
+        else if(item.Name == "Backstage passes to a TAFKAL80ETC concert")
+        {
+            updateBackstagePasses(item);
+        }
+        else
+        {
+            updateNormalItems(item);
+        }
 
-            Items[i].SellIn = Items[i].SellIn - 1;
+        // Globally correct for out of bounds quality values
+        if (item.Quality < 0) item.Quality = 0;
+        if (item.Quality > 50) item.Quality = 50;
+    }
 
-            if (Items[i].Name == "Aged Brie")
+    private void UpdateAgedBrie(Item item)
+    {
+        item.SellIn -= 1;
+    if (item.SellIn >= 0)
+        {
+            item.Quality+=1;
+        }
+        else
+        {
+            item.Quality += 2;
+        };
+    }
+
+    private void updateBackstagePasses(Item item)
+    {
+        if (item.SellIn > 10)
             {
-                if (Items[i].Quality < 50)
-                {
-                    if (Items[i].SellIn >= 0)
-                    {
-                        Items[i].Quality+=1;
-                    }
-                    else
-                    {
-                        Items[i].Quality += 2;
-                    }
-                }
-                continue;
+                item.Quality += 1;
             }
-            else if (Items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
+            else if (item.SellIn > 5)
             {
-                if (Items[i].SellIn > 10 && Items[i].Quality < 50)
-                {
-                    Items[i].Quality += 1;
-                }
-                else if (Items[i].SellIn > 5 && Items[i].Quality < 48)
-                {
-                    Items[i].Quality += 2;           
-                }
-                else if (Items[i].SellIn > 0 && Items[i].Quality < 47)
-                {
-                    Items[i].Quality += 3;
-                }
-                else
-                {
-                    Items[i].Quality = 0;
-                }
-                continue;
+                item.Quality += 2;           
+            }
+            else if (item.SellIn > 0)
+            {
+                item.Quality += 3;
             }
             else
             {
-                if (Items[i].Quality > 0)
-                {
-                    if (Items[i].SellIn <= 0)
-                    {
-                        Items[i].Quality = Items[i].Quality - 2;
-                    }
-                    else
-                    {
-                        Items[i].Quality = Items[i].Quality - 1;
-                    }
-                }
-                continue;
+                item.Quality = 0;
             }
-        }
+        item.SellIn -= 1;
+    }
+
+    private void updateNormalItems(Item item)
+    {
+        item.SellIn--;
+        item.Quality -= (item.SellIn < 0) ? 2 : 1;
     }
 }
